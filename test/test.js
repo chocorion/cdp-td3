@@ -1,5 +1,12 @@
-const { expect } = require('chai');
+const chai = require('chai');
+const chaiAsPromise = require('chai-as-promised');
 const { Builder, By, Key, until } = require('selenium-webdriver');
+
+chai.use(chaiAsPromise);
+
+const expect = chai.expect;
+const assert = chai.assert;
+
 
 const URL = "http://localhost:3000/";
 
@@ -29,10 +36,11 @@ describe('Affichage atelier', () => {
 	describe("Liste vide", () => {
 		it("Aucun atelier ne devrait être affiché", async () => {
 			// TODO
+
+			const expectedError = "Unable to locate element: li";
 			await driver.get(URL);
-			expect(
-				await driver.findElement(By.css('li'))
-			).to.throws(Error)
+			// driver.findElement(By.css('li'))
+			return expect(driver.findElement(By.css('li'))).to.be.rejectedWith(expectedError);
 		});
 	});
 
