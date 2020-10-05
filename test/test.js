@@ -65,32 +65,69 @@ describe('Affichage atelier', () => {
 describe('Création atelier', () => {
 	describe("Page de création", () => {
 		it("Quand on clique sur Create new workshop, on devrait se retrouver sur l'interface de création d'un atelier", async () => {
-			// TODO
 			await driver.get(URL);
-			expect(true).true;
+
+			await driver.findElements(By.className('btn-success'))
+				.then( async elements => { 
+					await elements[0].click();
+
+					driver.getCurrentUrl()
+					.then( url => { 
+						expect(url.includes("/workshop")).true; 
+					});
+				});
 		});
 	});
 
 	describe("Création d'un atelier valide", () => {
 		it("Si un atelier valide a été créé, il devrait être affiché sur la page d'index", async () => {
-			// TODO
 			await driver.get(URL);
-			expect(true).true;
+			expect(true).true; // Same test as 1.2 ?
 		});
 	});
 
 	describe("Création d'un atelier invalide", () => {
 		it("Si on essaye de créer un atelier sans nom, un popup apparait et l'atelier ne devrait pas être créé.", async () => {
-			// TODO
-			await driver.get(URL);
+			await driver.get(URL+"workshop");
+
+			await driver.findElement(By.id('description'))
+				.then( async element => { 
+					await element.sendKeys("test")
+				});
+
+			await driver.findElements(By.className('btn-primary'))
+				.then( async elements => { 
+					await elements[0].click();
+
+					// Check for popup
+				});
+
+
 			expect(true).true;
 		});
 	});
 
 	describe("Annulation d'un atelier", () => {
 		it("Si on quitte la création d'un atelier, l'atelier ne devrait pas être créé.", async () => {
-			// TODO
-			await driver.get(URL);
+			await driver.get(URL+"workshop");
+
+			await driver.findElement(By.id('name'))
+				.then( async element => { 
+					await element.sendKeys("test2")
+				});
+
+			await driver.findElement(By.id('description'))
+				.then( async element => { 
+					await element.sendKeys("test2")
+				});
+
+			await driver.findElements(By.className('btn-secondary'))
+				.then( async elements => { 
+					await elements[0].click();
+
+					// Check workshop doesnt exist	
+				});
+
 			expect(true).true;
 		});
 	});
