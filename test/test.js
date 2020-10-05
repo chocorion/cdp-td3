@@ -59,7 +59,8 @@ describe('Création atelier', () => {
 		it("Quand on clique sur Create new workshop, on devrait se retrouver sur l'interface de création d'un atelier", async () => {
 			// TODO
 			await driver.get(URL);
-			expect(true).true;
+			await driver.findElements(By.className('btn-success')).then( async elements => { await elements[0].click() });
+			await driver.getCurrentUrl().then( url => { expect(url.includes("/workshop")).true; });
 		});
 	});
 
