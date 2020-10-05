@@ -22,6 +22,25 @@ after(() => {
 	driver.close();
 })
 
+async function addWorkshop(name, description) {
+	await driver.get(URL+"workshop");
+
+	await driver.findElement(By.id('name'))
+		.then( async element => { 
+			await element.sendKeys(name)
+		});
+
+	await driver.findElement(By.id('description'))
+		.then( async element => { 
+			await element.sendKeys(description)
+		});
+
+	await driver.findElement(By.className('btn-primary'))
+		.then( async element => { 
+			await element.click();
+		});
+}
+
 describe('Affichage atelier', () => {
 	// describe('Test webdriver', () => {
 	// 	it('Should show firefox browser, and go to google home page', async () => {
@@ -35,20 +54,22 @@ describe('Affichage atelier', () => {
 
 	describe("Liste vide", () => {
 		it("Aucun atelier ne devrait être affiché", async () => {
-			// TODO
-
 			const expectedError = "Unable to locate element: li";
 			await driver.get(URL);
-			// driver.findElement(By.css('li'))
-			return expect(driver.findElement(By.css('li'))).to.be.rejectedWith(expectedError);
+
+			return expect(
+				driver.findElement(By.css('li'))
+			).to.be.rejectedWith(expectedError);
 		});
 	});
 
 	describe("Liste avec un atelier", () => {
 		it("Si un atelier a été créé, il devrait être affiché sur la page d'index", async () => {
-			// TODO
+			await addWorkshop('First', 'First workshop on this page');
 			await driver.get(URL);
-			expect(true).true;
+			const ateliers = await driver.findElements(By.css('li'));
+
+			expect(ateliers.length).to.be.equal(1);
 		});
 	});
 
