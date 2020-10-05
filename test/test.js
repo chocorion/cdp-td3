@@ -42,16 +42,6 @@ async function addWorkshop(name, description) {
 }
 
 describe('Affichage atelier', () => {
-	// describe('Test webdriver', () => {
-	// 	it('Should show firefox browser, and go to google home page', async () => {
-	// 		await driver.get("http://www.google.com/ncr");
-	// 		await driver.findElement(By.name('q')).sendKeys('webdriver', Key.RETURN);
-	// 		await driver.wait(until.titleIs('webdriver - Recherche Google'), 10000);
-
-	// 		expect(true).true;
-	// 	});
-	// });
-
 	describe("Liste vide", () => {
 		it("Aucun atelier ne devrait être affiché", async () => {
 			const expectedError = "Unable to locate element: li";
@@ -135,26 +125,34 @@ describe('Création atelier', () => {
 
 	describe("Annulation d'un atelier", () => {
 		it("Si on quitte la création d'un atelier, l'atelier ne devrait pas être créé.", async () => {
+			const elementName = "Test annulation atelier - name";
+			const elementDescription = "Test annulation atelier - description"
+			
 			await driver.get(URL+"workshop");
 
 			await driver.findElement(By.id('name'))
 				.then( async element => { 
-					await element.sendKeys("test2")
+					await element.sendKeys(elementName)
 				});
 
 			await driver.findElement(By.id('description'))
 				.then( async element => { 
-					await element.sendKeys("test2")
+					await element.sendKeys(elementDescription)
 				});
 
-			await driver.findElements(By.className('btn-secondary'))
-				.then( async elements => { 
-					await elements[0].click();
+			await driver.findElement(By.className('btn-secondary')).click()
+			const currentUrl = await driver.getCurrentUrl();
 
-					// Check workshop doesnt exist	
-				});
+			expect(currentUrl).to.be.equal(URL);
 
-			expect(true).true;
+			const elements = await driver.findElements(By.className('media-body'));
+
+			for (element of elements) {
+				const txt = await element.getText();
+
+				if (txt.includes(elementName) || txt.includes(elementDescription))
+					assert("L'atelier a été créé alors qu'il n'aurait pas du l'être")
+			}
 		});
 	});
 });
