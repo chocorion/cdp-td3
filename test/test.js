@@ -75,9 +75,14 @@ describe('Affichage atelier', () => {
 
 	describe("Liste avec plusieurs ateliers", () => {
 		it("Si plusiers ateliers ont été créés, ils devraient être affiché sur la page d'index", async () => {
-			// TODO
+			await addWorkshop('Second', 'Second workshop on this page');
+			await addWorkshop('Third', 'Third workshop on this page');
+			await addWorkshop('Fourth', 'Fourth workshop on this page');
 			await driver.get(URL);
-			expect(true).true;
+			const ateliers = await driver.findElements(By.css('li'));
+
+			// Already one with previous test
+			expect(ateliers.length).to.be.equal(4);
 		});
 	});
 });
