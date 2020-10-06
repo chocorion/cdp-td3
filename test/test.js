@@ -114,12 +114,10 @@ describe('Création atelier', () => {
 			await driver.findElements(By.className('btn-primary'))
 				.then( async elements => { 
 					await elements[0].click();
-
-					// Check for popup
 				});
 
-
-			expect(true).true;
+			const currentUrl = await driver.getCurrentUrl();
+			expect(currentUrl).to.be.equal(URL+"workshop");
 		});
 	});
 
